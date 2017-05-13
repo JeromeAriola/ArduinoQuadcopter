@@ -1,8 +1,18 @@
 /*
 Receiver Code(RX)/Quadcopter Side
-The setup for the quad is 2 Arduino Nanos and 2 NRF24L01+ PA LNA radio modules.
-The motors are brushless motors.
-Pins 5 and 6 are the back motors, while pins 9 and 10 are the front motors. The front left motor rotates CCW.
+The setup for the quad is:
+  -4 brushless motors (RacerStar BR 2212) rated at 25A
+  -4 propellers(duh! GemFan 6040)
+  -4 ESCs (HW30A XXD)
+  -Power Distribution Board (not required, but recommended)
+  -4000mAh 45C 3S Lipo (XF Power)
+  -Arduino Nano(remember this is Rx so of course there is a second Arduino)
+  -NRF24L01+ PA LNA (same as previous part, this is Rx)
+  
+Pins 5 and 6 are the back motors, while pins 9 and 10 are the front motors. How I can find my sense
+of direction is that the front left motor rotates CCW.
+
+The motor setup and how it's attached to the Arduino
    _________________
   |  pin 9 | pin 10 |
   |  CCW   |  CW    |
@@ -15,13 +25,10 @@ Pins 5 and 6 are the back motors, while pins 9 and 10 are the front motors. The 
 */
 
 #include <nRF24L01.h>
-#include <printf.h>
 #include <RF24.h>
-#include <RF24_config.h>
 
 #include <SPI.h>
 #include <Servo.h>
-#include <printf.h>
 
 Servo backLeft;
 Servo backRight;
@@ -31,26 +38,34 @@ Servo frontRight;
 #define CE_PIN 14     //A0 pin
 #define CSN_PIN 15    //A1 pin
 
-char command[3] =  
+char command;
 
-const byte address[6] = "00001";    //this simply specifies the 'address' that I will be using
+const byte address[6] ="00001" ;    //this simply specifies the 'address' that I will be using
 
-RF24 receiver(CE_PIN, CSN_PIN);
+RF24 radio(CE_PIN, CSN_PIN);
 
-/*
-This part I think should be edited out because since 03/30/2017 I learned to use servo Write
-It can be used for a brushed motor quad in the future
-  const int backLeft = 5;
-  const int backRight = 6;
-  const int frontLeft = 9;
-  const int frontRight = 10;
-*/  
+void setup()
+{
+  radio.begin();
+  radio.setDataRate(RF24_250KBPS);
+  radio.setPayloadSize(8);
+  radio.openReadingPipe(0, 00001);
+  radio.setRetries(15, 15);
+  radio.startListening();
 
-int changeMovementVal(){
-  if(radio.available() ){
-    radio.read(&command, )
-    }
-  }
+  
+  backLeft.attach(5);
+  backRight.attach(6);
+  frontLeft.attach(9);
+  frontRight.attach(10);
+  
+  pinMode(5,OUTPUT);
+  pinMode(6,OUTPUT);
+  pinMode(9,OUTPUT);
+  pinMode(10,OUTPUT);
+}
+
+//Movement Functions --not tested with drone; full of assumptions
 
 void hover()
 {
@@ -123,87 +138,83 @@ void rightYaw()
   frontLeft.write(60);
   frontRight.write(135);
 }
-void setup()
-{
-  backLeft.attach(5);
-  backRight.attach(6);
-  frontLeft.attach(9);
-  frontRight.attach(10);
-  
-  pinMode(5,OUTPUT);
-  pinMode(6,OUTPUT);
-  pinMode(9,OUTPUT);
-  pinMode(10,OUTPUT);
 
-  radio.begin();
-  radio.setPayloadSize(8);
-  radio.openReadingPipe(0, address);
-  radio.setRetries(15, 15);
+void readCommand()
+{
+  if(radio.available())
+  {
+    radio.read(&command, sizeof(command));
+  }
+}
+
+void outOfRange()
+{
+  if(!radio.available())
+  {
+    hover();
+  }
 }
 
 void loop() 
 {
-  //Up Altitude
-  if(/*receive message "U"*/)
-  {
-   altitudeUp();
-    }else{
-  	hover();
-  }
 
-  //Down Altitude
-  if(/*receive message "D"*/)
+  if(radio.available())
   {
-	altitudeDown();
-    }else{
-  	hover();
-  }
+      if(command == 'H')
+      {
+        hover();
+      }
+      //Up Altitude
+      if(command == 'U')
+      {
+        altitudeUp();
+        }else{
+        hover();
+      }
 
-  //Left Roll
-  if(/*receive message RL*/)
-  {
-	rollLeft();
-    }else{
-  	hover();
-  }
+      //Down Altitude
+      if(command == 'D')
+      {
+        altitudeDown();
+      }
 
-  //Right Roll
-  if(/*receive message RR*/)
-  {
-  	rollRight();
-    }else{
-  	hover();
-  }
+      //Left Roll
+      if(command == 'RL')
+      {
+        rollLeft();
+      }
 
-  //Front Roll or Pitch Down
-  if(/*receive message RF*/)
-  {
-  	rollFront();
-    }else{
-  	hover();
-  }
+      //Right Roll
+      if(command == 'RR')
+      {
+        rollRight();
+      }
 
-  //Back Roll or Pitch Up
-  if(/*receive message RB*/)
-  {
-	rollBack();
-  }else{
-  	hover();
-  }
+      //Front Roll or Pitch Down
+      if(command == 'RF')
+      {
+        rollFront();
+      } 
 
-  //Left Yaw
-  if (/*receive message YL*/)
-  {
-	leftYaw();
-    }else{
-  	hover();
-  }
+      //Back Roll or Pitch Up
+      if(command == 'RB')
+      {
+        rollBack();
+      }
 
-  //Right Yaw
-  if(/*receive message YR*/)
-  {
-	rightYaw();
-    }else{
-  	hover();
+      //Left Yaw
+      if (command == 'YL')
+      {
+        leftYaw();
+      }
+
+      //Right Yaw
+      if(command == 'YR')
+      {
+        rightYaw();
+      }
+      
+  outOfRange();
+  readCommand();
   }
 }
