@@ -1,4 +1,4 @@
-# ArduCopter
+# ArduinoQuadopter
 
 The code is very straightforward (I included some instructions in the code for the setup of some parts). You just have to tailor it for your needs, like your quad is heavy, increase the (servoName).write values.
 
@@ -18,14 +18,4 @@ The setup for the quad is:
 Pins 5 and 6 are the back motors, while pins 9 and 10 are the front motors. How I can find my sense
 of direction is that the front left motor rotates CCW.
 
-The motor setup and how it's attached to the Arduino
-   _________________
-  |  pin 9 | pin 10 |
-  |  CCW   |  CW    |
-  |        |        |
-  -------------------
-  | pin 5  |  pin 6 |
-  |  CW    |   CCW  |
-  |________|________|
-  
-  The transmitter code is pretty straightforward...
+The transmitter code is pretty straightforward...
