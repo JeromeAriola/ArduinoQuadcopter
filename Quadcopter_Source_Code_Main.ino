@@ -1,29 +1,3 @@
-/*
-Receiver Code(RX)/Quadcopter Side
-The setup for the quad is:
-  -4 brushless motors (RacerStar BR 2212) rated at 25A
-  -4 propellers(duh! GemFan 6040)
-  -4 ESCs (HW30A XXD)
-  -Power Distribution Board (not required, but recommended)
-  -4000mAh 45C 3S Lipo (XF Power)
-  -Arduino Nano(remember this is Rx so of course there is a second Arduino)
-  -NRF24L01+ PA LNA (same as previous part, this is Rx)
-  
-Pins 5 and 6 are the back motors, while pins 9 and 10 are the front motors. How I can find my sense
-of direction is that the front left motor rotates CCW.
-
-The motor setup and how it's attached to the Arduino
-   _________________
-  |  pin 9 | pin 10 |
-  |  CCW   |  CW    |
-  |        |        |
-  -------------------
-  | pin 5  |  pin 6 |
-  |  CW    |   CCW  |
-  |________|________|
-
-*/
-
 #include <nRF24L01.h>
 #include <RF24.h>
 
