@@ -75,7 +75,7 @@ void setup()
 
   radio.begin();
   radio.setPayloadSize(8);
-  radio.setRetries(15, 15);
+  radio.setRetries(5, 15);
   radio.openWritingPipe(address);
 }
 
