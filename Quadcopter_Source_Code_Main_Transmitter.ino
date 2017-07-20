@@ -29,11 +29,11 @@ Potentiometer Setup
 #define CE_PIN   14
 #define CSN_PIN 15
 
-const int leftPotX = 14; //A0
-const int leftPotY = 15; //A1
+const int leftPotX = 16; //A2
+const int leftPotY = 17; //A3
 
-const int rightPotX = 16; //A2
-const int rightPotY = 17; //A3
+const int rightPotX = 18; //A4
+const int rightPotY = 19; //A5
 
 const byte address[6] = "00001";
 
