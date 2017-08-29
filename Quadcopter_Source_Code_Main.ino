@@ -1,3 +1,8 @@
+/*The ESCs I use only have about 9 speed settings.
+  The servo values for the speeds (in order) are
+  30, 40, 50, 60, 70, 80, 90, 120, and 170.
+*/
+
 #include <nRF24L01.h>
 #include <RF24.h>
 
@@ -24,7 +29,7 @@ void setup()
   radio.setDataRate(RF24_250KBPS);
   radio.setPayloadSize(8);
   radio.openReadingPipe(0, 00001);
-  radio.setRetries(5, 15);
+  radio.setRetries(1, 15);
   radio.startListening();
 
   
@@ -43,48 +48,48 @@ void setup()
 
 void hover()
 {
-  backLeft.write(90);           //this simply assumes that half speed is like half
-  backRight.write(90);          //turn in a servo
-  frontLeft.write(90);
-  frontRight.write(90);
+  backLeft.write(40);           //this simply assumes that half speed is like half
+  backRight.write(40);          //turn in a servo
+  frontLeft.write(40);
+  frontRight.write(40);
 }
 
 void altitudeUp()
 {
-  backLeft.write(170);
-  backRight.write(170);     //a little almost full speed or full turn in
-  frontLeft.write(170);     //servo. 180 is a burst speed for the ESCs
-  frontRight.write(170);
+  backLeft.write(120);
+  backRight.write(120);
+  frontLeft.write(120);
+  frontRight.write(120);
 }
 
 void altitudeDown()
 {
-  backLeft.write(60);
-  backRight.write(60);
-  frontLeft.write(60);
-  frontRight.write(60);
+  backLeft.write(30);
+  backRight.write(30);
+  frontLeft.write(30);
+  frontRight.write(30);
 }
 
 void rollLeft()
 {
   backLeft.write(60);
-  backRight.write(135);
+  backRight.write(120);
   frontLeft.write(60);
-  frontRight.write(135);
+  frontRight.write(120);
 }
 
 void rollRight()
 {
-  backLeft.write(135);
+  backLeft.write(120);
   backRight.write(60);
-  frontLeft.write(135);
+  frontLeft.write(120);
   frontRight.write(60);
 }
 
 void rollFront()
 {
-  backLeft.write(135);
-  backRight.write(135);
+  backLeft.write(120);
+  backRight.write(120);
   frontLeft.write(60);
   frontRight.write(60);
 }
@@ -93,24 +98,24 @@ void rollBack()
 {
   backLeft.write(60);
   backRight.write(60);
-  frontLeft.write(135);
-  frontRight.write(135);
+  frontLeft.write(120);
+  frontRight.write(120);
 }
 
 void leftYaw()
 {
   backLeft.write(60);
-  backRight.write(135);
-  frontLeft.write(135);
+  backRight.write(120);
+  frontLeft.write(120);
   frontRight.write(60);
 }
 
 void rightYaw()
 {
-  backLeft.write(135);
+  backLeft.write(120);
   backRight.write(60);
   frontLeft.write(60);
-  frontRight.write(135);
+  frontRight.write(120);
 }
 
 void readCommand()
