@@ -19,6 +19,9 @@ Servo frontRight;
 #define CSN_PIN 15    //A1 pin
 
 int GlobalCameraAdjust;
+int hoverVal = 40;    //not necessarily going to perfectly hover
+int servoVal = hvoerVal;
+int usingServoVal = servoVal;
 
 bool cameraAdjust = false;
 
@@ -208,7 +211,8 @@ void loop()
   {
     cameraAdjust = false;
   }
-
+  
+//Adjust FPV camera
   while(cameraAdjust = true)
   {
     int cameraServoVal = 30;
@@ -234,7 +238,24 @@ void loop()
     cameraServo.write(cameraServoVal);
   }
 
-  
+  while(command == 'U')
+  {
+    servoVal +=10;
+    delay(100);
+    if(servoVal > 170)
+    {
+      usingServoVal = 170;
+    }
+    if(servoVal = 100 || 110)
+    {
+      usingServoVal = 120;
+    }
+    if(servoVal = 130 || 140 || 150 || 160)
+    {
+      usingServoVal = 170;
+    }
+  }
+
   
   outOfRange();
   readCommand();
