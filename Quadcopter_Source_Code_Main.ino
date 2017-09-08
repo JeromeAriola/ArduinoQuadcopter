@@ -9,6 +9,7 @@
 #include <SPI.h>
 #include <Servo.h>
 
+Servo cameraServo;
 Servo backLeft;
 Servo backRight;
 Servo frontLeft;
@@ -16,6 +17,10 @@ Servo frontRight;
 
 #define CE_PIN 14     //A0 pin
 #define CSN_PIN 15    //A1 pin
+
+int GlobalCameraAdjust;
+
+bool cameraAdjust = false;
 
 char command;
 
@@ -32,16 +37,18 @@ void setup()
   radio.setRetries(1, 15);
   radio.startListening();
 
-  
+  cameraServo.attach(4);
   backLeft.attach(5);
   backRight.attach(6);
   frontLeft.attach(9);
   frontRight.attach(10);
   
+  pinMode(4,OUTPUT);
   pinMode(5,OUTPUT);
   pinMode(6,OUTPUT);
   pinMode(9,OUTPUT);
   pinMode(10,OUTPUT);
+ 
 }
 
 //Movement Functions --not tested with drone; full of assumptions
@@ -192,7 +199,43 @@ void loop()
       {
         rightYaw();
       }
-      
+
+  if(command == 'ADJUSTCAM')
+  {
+    cameraAdjust = true;
+  }
+  else if(command == 'ADJUSTEDCAM')
+  {
+    cameraAdjust = false;
+  }
+
+  while(cameraAdjust = true)
+  {
+    int cameraServoVal = 30;
+    while(command == 'U')
+    {
+      cameraServoVal +=5;
+      delay(100);
+      if(cameraServoVal > 180)
+      {
+        break;
+      }
+    }
+    while(command == 'D')
+    {
+      cameraServoVal -= 5;
+      delay(100);
+      if(cameraServoVal < 30)
+      {
+        break;
+      }
+    }
+    int GlobalCameraAdjust = cameraServoVal;
+    cameraServo.write(cameraServoVal);
+  }
+
+  
+  
   outOfRange();
   readCommand();
   }
