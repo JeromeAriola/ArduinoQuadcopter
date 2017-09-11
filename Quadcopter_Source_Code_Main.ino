@@ -19,9 +19,7 @@ Servo frontRight;
 #define CSN_PIN 15    //A1 pin
 
 int GlobalCameraAdjust;
-int hoverVal = 40;    //not necessarily going to perfectly hover
-int servoVal = hvoerVal;
-int usingServoVal = servoVal;
+const int globalHoverVal;
 
 bool cameraAdjust = false;
 
@@ -66,18 +64,61 @@ void hover()
 
 void altitudeUp()
 {
-  backLeft.write(120);
-  backRight.write(120);
-  frontLeft.write(120);
-  frontRight.write(120);
+  int hoverVal = 40;    //not necessarily going to perfectly hover
+  int servoVal = hoverVal;
+  int usingServoVal = servoVal;
+  
+  while(command == 'U')
+  {
+    servoVal +=10;
+    delay(100);
+    if(servoVal > 170)
+    {
+      usingServoVal = 170;
+    }
+    if(servoVal = 100 || 110)
+    {
+      usingServoVal = 120;
+    }
+    if(servoVal = 130 || 140 || 150 || 160)
+    {
+      usingServoVal = 170;
+    }
+    backLeft.write(usingServoVal);
+    backRight.write(usingServoVal);
+    frontLeft.write(usingServoVal);
+    frontRight.write(usingServoVal);
+  }
+
 }
 
 void altitudeDown()
 {
-  backLeft.write(30);
-  backRight.write(30);
-  frontLeft.write(30);
-  frontRight.write(30);
+  while(command == 'D')
+  {
+    int hoverVal = 40;    //not necessarily going to perfectly hover
+    int servoVal = hoverVal;
+    int usingServoVal = servoVal;
+
+    servoVal-=10;
+    delay(100);
+    if(servoVal < 30)
+    {
+      usingServoVal=30;
+    }
+    if(servoVal = 100 || 110)
+    {
+      usingServoVal = 120;
+    }
+    if(servoVal = 130 || 140 || 150 || 160 || 180)
+    {
+      usingServoVal = 170;
+    }
+    backLeft.write(usingServoVal);
+    backRight.write(usingServoVal);
+    frontLeft.write(usingServoVal);
+    frontRight.write(usingServoVal);
+  }
 }
 
 void rollLeft()
@@ -156,7 +197,7 @@ void loop()
       //Up Altitude
       if(command == 'U')
       {
-        altitudeUp();
+        altitudeUp(); 
         }else{
         hover();
       }
@@ -237,26 +278,6 @@ void loop()
     int GlobalCameraAdjust = cameraServoVal;
     cameraServo.write(cameraServoVal);
   }
-
-  while(command == 'U')
-  {
-    servoVal +=10;
-    delay(100);
-    if(servoVal > 170)
-    {
-      usingServoVal = 170;
-    }
-    if(servoVal = 100 || 110)
-    {
-      usingServoVal = 120;
-    }
-    if(servoVal = 130 || 140 || 150 || 160)
-    {
-      usingServoVal = 170;
-    }
-  }
-
-  
   outOfRange();
   readCommand();
   }
