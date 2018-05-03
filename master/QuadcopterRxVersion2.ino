@@ -51,10 +51,10 @@ void preArm()
 {
 	if(armed == false)
 	{
-		1.write(5);
-		2.write(5);
-		3.write(5);
-		4.write(5);
+		a.write(5);
+		b.write(5);
+		c.write(5);
+		d.write(5);
 		delay(4000);
 		armed == true;
 	}
@@ -78,10 +78,10 @@ void flightMode0()
 			{
 				int throttle;
 				throttle = command;
-				1.write(throttle);
-				2.write(throttle);
-				3.write(throttle);
-				4.write(throttle);
+				a.write(throttle);
+				b.write(throttle);
+				c.write(throttle);
+				d.write(throttle);
 			}
 		
 /////////////////ROLL//////////////////
@@ -90,20 +90,20 @@ void flightMode0()
 			{
 				int roll;
 				roll = command - 1000;
-				1.write(roll);
-				2.write(roll -= 20);
-				3.write(roll);
-				4.write(roll -= 20);
+				a.write(roll);
+				b.write(roll -= 20);
+				c.write(roll);
+				d.write(roll -= 20);
 			}
 
 			if(command >= -1200 && command <= -1000)
 			{
 				int negRoll;
 				negRoll = (command * -1) -1000;
-				1.write(negRoll -= 10);
-				2.write(negRoll);
-				3.write(negRoll -= 10);
-				4.write(negRoll);
+				a.write(negRoll -= 10);
+				b.write(negRoll);
+				c.write(negRoll -= 10);
+				d.write(negRoll);
 			}
 
 /////////////////PITCH/////////////////
@@ -112,20 +112,20 @@ void flightMode0()
 			{
 				int pitch;
 				pitch = command -= 10000;
-				1.write(pitch -= 10);
-				2.write(pitch -= 10);
-				3.write(pitch);
-				4.write(pitch);
+				a.write(pitch -= 10);
+				b.write(pitch -= 10);
+				c.write(pitch);
+				d.write(pitch);
 			}
 
 			if(command >= -10200 && command <= -10000)
 			{
 				int negPitch;
 				negPitch = (command * -1) - 10000;
-				1.write(negPitch);
-				2.write(negPitch);
-				3.write(negPitch -= 10);
-				4.write(negPitch -= 10);
+				a.write(negPitch);
+				b.write(negPitch);
+				c.write(negPitch -= 10);
+				d.write(negPitch -= 10);
 			}
 
 /////////////////YAW///////////////////
@@ -134,20 +134,20 @@ void flightMode0()
 			{
 				int yaw;
 				yaw = command -= 20000;
-				1.write(yaw);
-				2.write(yaw -= 20);
-				3.write(yaw -= 20);
-				4.write(yaw);
+				a.write(yaw);
+				b.write(yaw -= 20);
+				c.write(yaw -= 20);
+				d.write(yaw);
 			}
 
 			if(command >= -20200 && command <= -20000)
 			{
 				int negYaw;
 				negYaw = (command * -1) -20000;
-				1.write(negYaw -= 20);
-				2.write(negYaw);
-				3.write(negYaw);
-				4.write(negYaw -= 20);
+				a.write(negYaw -= 20);
+				b.write(negYaw);
+				c.write(negYaw);
+				d.write(negYaw -= 20);
 			}
 		
 		newData = false;
